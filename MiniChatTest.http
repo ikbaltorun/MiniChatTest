@@ -1,0 +1,6 @@
+@MiniChatTest_HostAddress = http://localhost:5274
+
+GET {{MiniChatTest_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

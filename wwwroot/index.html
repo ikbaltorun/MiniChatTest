@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Yapay Zeka Destekli Mağaza</title>
+    <style>
+        /* Temel Ayarlar */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Üst Menü (Navbar) */
+        header {
+            background-color: #0f172a;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+            .logo span {
+                color: #38bdf8;
+            }
+
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .user-info {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .cart-btn {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+            .cart-btn:hover {
+                background: #7dd3fc;
+            }
+
+        /* Ana Düzen (Yan Menü + Sohbet Alanı) */
+        .main-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 70px);
+        }
+
+        /* Sol Yan Menü (Kategoriler) */
+        aside {
+            width: 260px;
+            background-color: white;
+            padding: 25px 20px;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto; /* Aşağı kaydırma özelliğini açar */
+        }
+
+            /* Sol menü kaydırma çubuğunun şık ve ince görünmesi için (İsteğe bağlı) */
+            aside::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            aside::-webkit-scrollbar-thumb {
+                background-color: #cbd5e1;
+                border-radius: 10px;
+            }
+
+            aside::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+
+        .sidebar-title {
+            font-size: 13px;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .category-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+            .category-list li {
+                padding: 12px 15px;
+                background: #f1f5f9;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: 0.2s;
+                font-size: 15px;
+                font-weight: 600;
+                color: #334155;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+                .category-list li:hover {
+                    background: #e0f2fe;
+                    color: #0284c7;
+                    transform: translateX(5px);
+                }
+
+        /* Orta Mağaza/Asistan Alanı */
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #f8fafc;
+        }
+
+        .chat-header {
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid #e2e8f0;
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-status {
+            font-weight: bold;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #22c55e;
+        }
+
+        /* Mesaj Kutusu */
+        .chat-box {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 18px 22px;
+            border-radius: 12px;
+            line-height: 1.6;
+            font-size: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-message {
+            background-color: #0f172a;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2);
+        }
+
+        .bot-message {
+            background-color: white;
+            color: #1e293b;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 900px;
+        }
+
+            /* Ürün Kartları Asistan İçin Özelleştirme */
+            .bot-message img {
+                border-radius: 8px;
+                border: 1px solid #e2e8f0;
+            }
+
+        /* Giriş Alanı */
+        .input-area {
+            padding: 25px 40px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+            .input-area input {
+                flex: 1;
+                padding: 18px 25px;
+                border: 2px solid #e2e8f0;
+                border-radius: 12px;
+                font-size: 16px;
+                outline: none;
+                transition: 0.3s;
+                background: #f8fafc;
+            }
+
+                .input-area input:focus {
+                    border-color: #38bdf8;
+                    background: white;
+                    box-shadow: 0 0 0 4px rgba(56,189,248,0.1);
+                }
+
+            .input-area button {
+                background-color: #38bdf8;
+                color: #0f172a;
+                border: none;
+                padding: 0 40px;
+                height: 56px;
+                border-radius: 12px;
+                font-weight: bold;
+                font-size: 16px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+                .input-area button:hover {
+                    background-color: #0ea5e9;
+                    color: white;
+                    transform: translateY(-2px);
+                }
+
+        /* Yazıyor animasyonu */
+        .typing-indicator {
+            font-style: italic;
+            color: #64748b;
+            font-size: 14px;
+            align-self: flex-start;
+            margin-left: 20px;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Üst Navbar -->
+    <header>
+        <div class="logo">💻 Tech<span>Store</span></div>
+        <div class="header-right">
+            <span class="user-info">Hoş Geldiniz, Ziyaretçi</span>
+            <button class="cart-btn">🛒 Sepetim (0)</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sol Menü (Hızlı Filtreler) -->
+        <aside>
+            <div class="sidebar-title">Hızlı Aramalar</div>
+            <ul class="category-list">
+                <li onclick="quickSearch('Ürünleri Listeleme')">📦 Tüm Ürünler</li>
+                <li onclick="quickSearch('en pahalı')">💎 En Pahalı Ürünler</li>
+                <li onclick="quickSearch('en ucuz')">🏷️ En Ucuz Ürünler</li>
+                <li onclick="quickSearch('en yüksek')">⭐ En Yüksek Puanlılar</li>
+                <li onclick="quickSearch('Oyun için ne önerirsin?')">🎮 Oyun Bilgisayarları</li>
+            </ul>
+
+            <div class="sidebar-title" style="margin-top: 20px;">Kategoriler</div>
+            <ul class="category-list">
+                <li onclick="quickSearch('Laptop bilgi')">💻 Laptop</li>
+                <li onclick="quickSearch('Telefon bilgi')">📱 Telefon</li>
+                <li onclick="quickSearch('Monitör bilgi')">🖥️ Monitör</li>
+                <li onclick="quickSearch('Klavye bilgi')">⌨️ Klavye</li>
+                <li onclick="quickSearch('Kulaklık bilgi')">🎧 Kulaklık</li>
+            </ul>
+        </aside>
+
+        <!-- Orta Yapay Zeka Asistanı ve Alışveriş Alanı -->
+        <section class="chat-section">
+            <div class="chat-header">
+                <div class="ai-status">
+                    <span class="status-dot"></span>
+                    TechStore AI Asistanı Aktif
+                </div>
+                <div style="color: #64748b; font-size: 13px;">Size nasıl yardımcı olabilirim?</div>
+            </div>
+
+            <div class="chat-box" id="chatBox">
+                <div class="message bot-message">
+                    👋 <b>TechStore'a Hoş Geldiniz!</b><br><br>
+                    Ben akıllı mağaza asistanınızım. Aradığınız ürünleri bulabilir, fiyat karşılaştırması yapabilir veya ihtiyaçlarınıza özel tavsiyeler verebilirim.<br><br>
+                    <i>Örnek: "Yazılımcı için en uygun laptop hangisi?" veya "Bana en ucuz telefonu göster" diyebilirsiniz. Veya sol menüden hızlıca seçim yapabilirsiniz.</i>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typing">TechStore AI düşünüyor...</div>
+
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Aramak istediğiniz ürünü veya sorunuzu buraya yazın..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Gönder</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Sol menüdeki butonlara tıklandığında otomatik arama yapan fonksiyon
+        function quickSearch(text) {
+            document.getElementById('userInput').value = text;
+            sendMessage();
+        }
+
+        // Enter tuşuna basıldığında mesajı gönderir
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const inputField = document.getElementById('userInput');
+            const message = inputField.value.trim();
+            if (!message) return;
+
+            const chatBox = document.getElementById('chatBox');
+            const typingIndicator = document.getElementById('typing');
+
+            // Kullanıcı mesajını ekrana ekle
+            chatBox.innerHTML += `<div class="message user-message">${message}</div>`;
+            inputField.value = '';
+
+            // Asistan düşünüyor yazısını göster ve en alta kaydır
+            typingIndicator.style.display = 'block';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // Backend'e (ChatController'a) istek atıyoruz
+                const response = await fetch('/api/chat/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Text: message })
+                });
+
+                const data = await response.json();
+
+                // Düşünüyor yazısını gizle ve bot cevabını ekle
+                typingIndicator.style.display = 'none';
+                chatBox.innerHTML += `<div class="message bot-message">${data.reply}</div>`;
+
+                // Ekranı yeni mesaja kaydır
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                typingIndicator.style.display = 'none';
+                chatBox.innerHTML += `<div class="message bot-message" style="color: red;">❌ Sunucuya bağlanırken bir hata oluştu. Lütfen tekrar deneyin.</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
