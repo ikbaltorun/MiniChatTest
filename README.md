@@ -28,7 +28,9 @@ Projenin yapı taşları ve dosyaların yerleri şu şekildedir:
 
 Projeyi test etmek veya incelemek için şu adımları izleyebilirsiniz:
 
-1. **Projeyi Açın:** Proje klasörünün içinde bulunan **`MiniChatTest.sln`** dosyasına çift tıklayarak Visual Studio ile açın.
-2. **Paketlerin Yüklenmesini Bekleyin:** Visual Studio açıldığında altta *“Restoring NuGet packages...”* yazısı çıkacaktır; eksik paketlerin otomatik yüklenmesi için birkaç saniye bekleyin.
-3. **Çalıştırın:** Visual Studio üst menüsündeki yeşil **`https`** çalıştır butonuna basın veya klavyeden **`F5`** tuşuna basın. 
-4. Tarayıcı otomatik olarak açılacak ve e-ticaret arayüzü karşınıza gelecektir!
+1. **Projeyi İndirin:** GitHub sayfasındaki yeşil **Code** butonuna tıklayın ve **Download ZIP** seçeneği ile projeyi bilgisayarınıza indirin.
+2. **Klasöre Çıkartın:** İndirdiğiniz ZIP dosyasını sağ tıklayıp normal bir klasöre çıkartın *(Asla ZIP içinden doğrudan açmayın)*.
+3. **Visual Studio ile Açın:** Çıkardığınız klasörün içine girip **`MiniChatTest.sln`** dosyasına çift tıklayarak projeyi Visual Studio ile açın.
+4. **Paketlerin Yüklenmesini Bekleyin:** Visual Studio açıldığında altta *“Restoring NuGet packages...”* yazısı çıkacaktır; eksik paketlerin otomatik yüklenmesi için birkaç saniye bekleyin.
+5. **Çalıştırın:** Visual Studio üst menüsündeki yeşil **`https`** çalıştır butonuna basın veya klavyeden **`F5`** tuşuna basın. 
+6. Tarayıcı otomatik olarak açılacak ve e-ticaret arayüzü karşınıza gelecektir!
