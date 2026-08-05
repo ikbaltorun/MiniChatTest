@@ -1,0 +1,27 @@
+﻿version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: minichat_web
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data # SQLite veri tabanı sıfırlanmasın diye klasöre bağlıyoruz
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/ecommerce.db
+      # Eğer projede Ollama linki varsa, bunu konteynerin anlayacağı adrese çeviriyoruz
+      - OllamaUrl=http://ollama:11434 
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: minichat_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama # Yapay zeka modeli (llama 3.1) silinmesin diye kaydediyoruz
+
+volumes:
+  ollama_data:
