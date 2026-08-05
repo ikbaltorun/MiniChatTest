@@ -2,7 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using MiniChatTest.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = builder.Environment;
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+Console.WriteLine($"{env.EnvironmentName} {connectionString}");
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
